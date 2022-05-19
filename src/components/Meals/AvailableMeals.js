@@ -12,7 +12,7 @@ const AvailableMeals = () => {
 
     useEffect(() => {
         const fetchMeals = async () => {
-            const response = await fetch(process.env.REACT_APP_FIREBASE_DATABASE) //replace with your database link
+            const response = await fetch(process.env.REACT_APP_FIREBASE_DATABASE_MEALS) //replace with your database link
 
             if (!response.ok) {
                 throw new Error('Something went wrong!')
