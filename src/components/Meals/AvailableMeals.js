@@ -8,10 +8,16 @@ const AvailableMeals = () => {
 
     const [meals, setMeals] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState()
 
     useEffect(() => {
         const fetchMeals = async () => {
             const response = await fetch(process.env.REACT_APP_FIREBASE_DATABASE) //replace with your database link
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!')
+            }
+
             const responseData = await response.json();
 
             const loadedMeals = [];
@@ -29,7 +35,11 @@ const AvailableMeals = () => {
             setIsLoading(false)
         }
 
-        fetchMeals()
+        fetchMeals().catch(err => {
+            setIsLoading(false)
+            setError(err.message)
+        })
+
 
     }, [])
 
@@ -37,6 +47,14 @@ const AvailableMeals = () => {
         return (
             <section className={classes.MealsLoading}>
                 <p>Loading...</p>
+            </section>
+        )
+    }
+
+    if (error) {
+        return (
+            <section className={classes.MealsError}>
+                <p>{error}</p>
             </section>
         )
     }
